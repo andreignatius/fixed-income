@@ -1,0 +1,12 @@
+Tenor,Product,Rate
+6m,LIBOR,2.50%
+1y,IRS,2.80%
+2y,IRS,3.00%
+3y,IRS,3.15%
+4y,IRS,3.25%
+5y,IRS,3.30%
+7y,IRS,3.50%
+10y,IRS,3.70%
+15y,IRS,4.00%
+20y,IRS,4.50%
+30y,IRS,5.00%
