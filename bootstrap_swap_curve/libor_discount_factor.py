@@ -7,6 +7,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from forward_swap_rate import calculate_forward_rate
 
 # Load the OIS data from the CSV file
 irs_data_path = '../data/IRS_Data.csv'
@@ -70,6 +71,11 @@ df_plot = df_plot.sort_values(by='Tenor')
 # Plotting the LIBOR Discount Curve
 plt.figure(figsize=(14, 7))
 plt.plot(df_plot['Tenor'], df_plot['Discount Factor'], marker='o', label='LIBOR Discount Factors')
+
+# Example usage - assuming df_plot contains the tenors and discount factors
+# Let's calculate the 1y×1y forward rate as an example
+forward_rate_1y1y = calculate_forward_rate(df_plot, 1, 2)
+print(f"1y×1y forward rate: {forward_rate_1y1y:.2%}")
 
 # Setting the plot details
 plt.title('LIBOR Discount Curve')
