@@ -74,6 +74,7 @@ plt.plot(df_plot['Tenor'], df_plot['Discount Factor'], marker='o', label='LIBOR 
 
 # Example usage - assuming df_plot contains the tenors and discount factors
 # Let's calculate the 1y×1y forward rate as an example
+print("check df_plot: ", df_plot)
 forward_rate_1y1y = calculate_forward_rate(df_plot, 1, 2)
 print(f"1y×1y forward rate: {forward_rate_1y1y:.2%}")
 
