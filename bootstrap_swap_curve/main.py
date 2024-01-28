@@ -1,7 +1,10 @@
 import pandas as pd
 
+# read data
 ois_data = pd.read_csv("../data/OIS_Data.csv")
-# print(ois_data.head())
+irs_data = pd.read_csv("../data/IRS_Data.csv")
+ois_data.columns = map(str.lower, ois_data.columns)
+irs_data.columns = map(str.lower, irs_data.columns)
 
 # use dict comprehension?
 tenor_mapping = {
@@ -17,9 +20,23 @@ tenor_mapping = {
     "20y": 20,
     "30y": 30,
 }
-# oh there is a series.map
-ois_data["Tenor"] = ois_data["Tenor"].map(tenor_mapping)
-# rate to dec values
-ois_data["Rate"] = ois_data["Rate"].str.strip("%").astype(float) / 100.0
 
+# OIS processing
+ois_data["tenor"] = ois_data["tenor"].map(tenor_mapping)
+ois_data["rate"] = ois_data["rate"].str.strip("%").astype(float) / 100.0
+
+# IRS processing
+irs_data["tenor"] = irs_data["tenor"].map(tenor_mapping)
+irs_data["rate"] = irs_data["rate"].str.strip("%").astype(float) / 100.0
+
+# check data
+print(irs_data)
+
+# get DF-OIS
+ois_data["disc_factor"] = 1 / (1 + ois_data["tenor"] * ois_data["rate"])
 print(ois_data)
+
+# now try IRS
+# just the libor rate
+disc_6mlibor = 1 / (1 + irs_data.loc[0][0] * irs_data.loc[0][2])
+# ada caranya ngga ya
