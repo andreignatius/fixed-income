@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # read data
 ois_data = pd.read_csv("../data/OIS_Data.csv")
@@ -35,6 +36,16 @@ print(irs_data)
 # get DF-OIS
 ois_data["disc_factor"] = 1 / (1 + ois_data["tenor"] * ois_data["rate"])
 print(ois_data)
+plt.plot(
+    ois_data["tenor"],
+    ois_data["disc_factor"],
+    linestyle="dashed",
+    alpha=0.5,
+    color="red",
+)
+plt.plot(ois_data["tenor"], ois_data["disc_factor"], "ro")
+plt.title("ois discount factor plot")
+plt.show()
 
 # now try IRS
 # just the libor rate
