@@ -1,0 +1,63 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+
+\begin{document}
+
+\section*{OIS Curve Fitting}
+
+Let $f_0$ denote the daily compounded overnight rate for $[0, 6m]$. Using the $6m$ OIS, we have:
+
+\begin{gather*}
+PV_{6m}^{fix} = PV_{6m}^{flt} \\
+\text{Do}(0, 6m) \times 0.5 \times 0.25\% = \text{Do}(0, 6m) \times \left[\left(1 + \frac{f_0}{360}\right)^{180} - 1\right]
+\end{gather*}
+
+\noindent We can now solve for $f_0$, which can be expressed as:
+
+\begin{gather*}
+f_0 = 360 \left[\left(\frac{1}{800} +1\right)^\frac{1}{180}
+-1\right]
+= 0.24985\%
+\end{gather*}
+
+\noindent Having obtained this, we can then let $f_1$ denote the daily compounded overnight rate for $[6\text{m}, 1\text{y}]$. Using the $1\text{y}$ OIS, we have:
+
+\begin{gather*}
+PV_{1y}^{fix} = PV_{1y}^{flt} \\
+\text{Do}(0, 1y) \times 0.3\% = \text{Do}(0, 1y) \times\left[
+\left(1 + \frac{f_0}{360}\right)^{180} \left(1 + \frac{f_1}{360}\right)^{180} - 1\right]
+\end{gather*}
+
+\noindent We can now solve for $f_1$. a s:
+
+\begin{gather*}
+ = 360 \left[\left(\left(\frac{1003}{1000}\right) /\left( 1+\frac{f_0}{360}
+\right)^{180}\right)^{\frac{1}{180}} -1\right]
+= 0.34926\%
+\end{gather*}
+
+
+\noindent Next, we move on to the $2y$ OIS. Let $f_2$ denote the daily compounded overnight rate for $[1y, 2y]$. We have:
+
+\begin{gather*}
+PV_{2y}^{\text{fix}} = PV_{2y}^{\text{flt}} \\
+\left[\text{Do}(0, 1y) + \text{Do}(0, 2y)\right] \times 0.325\% = \\
+\text{Do}(0, 1y) \times \left[\left(1 + \frac{f_0}{360}\right)^{180} \left(1 + \frac{f_1}{360}\right)^{180} - 1\right]\\
++ \text{Do}(0, 2y) \times \left[\left(1 + \frac{f_2}{360}\right)^{360} - 1\right]
+\end{gather*}
+
+\noindent Generally, we can express subsequent values for $f_x$ as:
+
+\begin{gather*}
+f_x = 360\left[\left( \frac{PV_{X}^{fix}-PV_{X-1}^{flt}+1}{\text{Do}(0, X)}\right)^\frac{1}{360} -1\right]\\
+\end{gather*}
+
+\noindent Where {\text{Do}(0, X)} is calculated by the given OIS rate as:
+
+\begin{gather*}
+{\text{Do}(0, X)} = \frac{1}{1-r_x^{OIS}X}
+\end{gather*}
+
+
+\end{document}
