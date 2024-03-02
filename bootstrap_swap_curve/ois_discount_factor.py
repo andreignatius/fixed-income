@@ -190,15 +190,32 @@ class OISBootstrapping:
                 if len(discount_factor) == 0:
                     # Discount factor of a certain tenor is not found in the dataframe.
                     # As such, the value needs to be interpolated
-                    prev_discount_factor_dict[i] = (
-                        lambda f: self.interpolate_discount_factor_between_tenor(
-                            prev_discount_factor,
-                            current_discount_factor_function(f),
-                            prev_tenor,
-                            tenor,
-                            i,
+                    if i < prev_tenor:
+                        ois_row_before_i = self.df_ois[self.df_ois["Tenor"] < i].iloc[
+                            -1, :
+                        ]
+                        ois_row_after_i = self.df_ois[self.df_ois["Tenor"] > i].iloc[
+                            0, :
+                        ]
+                        prev_discount_factor_dict[i] = (
+                            self.interpolate_discount_factor_between_tenor(
+                                ois_row_before_i["Discount Factor"],
+                                ois_row_after_i["Discount Factor"],
+                                ois_row_before_i["Tenor"],
+                                ois_row_after_i["Tenor"],
+                                i,
+                            )
                         )
-                    )
+                    else:
+                        prev_discount_factor_dict[i] = (
+                            lambda f, interp_tenor: self.interpolate_discount_factor_between_tenor(
+                                prev_discount_factor,
+                                current_discount_factor_function(f),
+                                prev_tenor,
+                                tenor,
+                                interp_tenor,
+                            )
+                        )
 
                 else:
                     prev_discount_factor_dict[i] = discount_factor[0]
@@ -207,8 +224,8 @@ class OISBootstrapping:
             def present_value_fixed_func(f):
                 return (
                     sum(
-                        e(f) if callable(e) else e
-                        for e in prev_discount_factor_dict.values()
+                        val(f, key) if callable(val) else val
+                        for key, val in prev_discount_factor_dict.items()
                     )
                     + current_discount_factor_function(f)
                 ) * rate
@@ -226,7 +243,7 @@ class OISBootstrapping:
                     self.fixed_leg_period,
                 ):
                     prev_interpolated_discount_factors.append(
-                        prev_discount_factor_dict[i](f)
+                        prev_discount_factor_dict[i](f, i)
                     )
                 return sum(prev_interpolated_discount_factors)
 
