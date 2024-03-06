@@ -1,17 +1,5 @@
 import math
 
-x = math.pow(1.00125, (1/180))
-
-
-f0 = (x-1)*360
-
-f1 = 360 * ( math.pow( (1.003 / 1.00125), (1/180) ) - 1 )
-
-print("f1: ", f1)
-
-num2 = 1.0065 * ( 0.00325 * ( 1/1.003 + 1/1.0065 ) - 0.003/1.003 ) + 1
-
-
 d1 = 1 / 1.003
 d2 = 1 / 1.0065
 d3 = 1 / 1.01005
@@ -55,52 +43,15 @@ d29 = d20 + 9/10 * (d30-d20)
 discount_factors = [
     d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17,d18,d19,d20,d21,d22,d23,d24,d25,d26,d27,d28,d29,d30
 ]
-f2 = 360 * ( math.pow(num2, 1/360) - 1 )
-l2 = (d1+d2) * 0.00325
-print("f2: ", f2, "pv2: ", l2)
 
-
-
-n3 = (d1+d2+d3) * 0.00335
-
-n4 = 0.003 / 1.003
-n5 = (num2 - 1) / 1.0065
-
-n6 = 1.01005 * (n3 - n4 - n5) + 1
-l3 = (d1+d2+d3) * 0.00335
-f3 = 360 * ( math.pow(n6, 1/360) - 1 )
-print("f3: ", f3, "pv3: ", l3 )
-
-l4 = (d1+d2+d3+d4) * 0.0035
-f4p = 1.014 * ( l4 - n3 )
-
-f4 = 360 * ( math.pow((f4p+1), 1/360) - 1 )
-print("f4: ", f4, "pv4: ", l4)
-
-l5 = (d1+d2+d3+d4+d5) * 0.0036
-f5p = 1.018 * ( l5 - l4 )
-f5 = 360 * ( math.pow((f5p+1), 1/360) - 1 )
-print("f5: ", f5, "pv5: ", l5)
-
-
-l6 = (d1+d2+d3+d4+d5+d6) * ( ((1/d6)-1) / 6 )
-f6p = (1 / d6) * ( l6 - l5 )
-f6 = 360 * ( math.pow((f6p+1), 1/360) - 1 )
-print("f6: ", f6, "pv6: ", l6)
-
-l7 = (d1+d2+d3+d4+d5+d6+d7) * 0.004
-f7p = 1.028 * ( l7 - l6 )
-f7 = 360 * ( math.pow((f7p+1), 1/360) - 1 )
-print("f7: ", f7, "pv7: ", l7)
-pv_prev = l2
-for i in range(2, 30):
+l1 = d1 * 0.003
+pv_prev = l1
+for i in range(1, 30):
 	# print(i, discount_factors[i])
 	pv = sum(discount_factors[0:i+1]) * ( ((1/discount_factors[i])-1) / (i+1) )
 	tmp = (1 / discount_factors[i]) * (pv - pv_prev)
 	f_val = 360 * (math.pow((tmp+1), 1/360) - 1)
 	print("dis_fac:", discount_factors[i], "\tf"+str(i+1), f_val, "\tpv"+str(i+1), pv)
 	pv_prev = pv
-
-
 
 
