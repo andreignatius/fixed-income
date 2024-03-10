@@ -1,34 +1,79 @@
 import math
 
-d1 = 1 / 1.003
-d2 = 1 / 1.0065
-d3 = 1 / 1.01005
-d4 = 1 / 1.014
+d1 = 1 / (1 + 0.003)
+# r1 = ( ( 1 / ( d1 ** (1/360) ) ) - 1 ) * 360
+# d1_2 = ( 1 + 0.003 - 0.00325 ) / ( 1 + 0.00325 )
 
-d5 = 1 / 1.018
-d7 = 1 / 1.028
+d2 = ((1 / (1 + 0.00325/360)) ** (2*360))
+# r2 = ( ( 1 / ( d2 ** (1/(2*360)) ) ) - 1 ) * 360
+# d2 = d1 * d1_2
+
+# d2_3 = ( 1 + 0.00325 - 0.00335 ) / ( 1 + 0.00335 )
+# d3 = d2 * d2_3
+
+d3 = ((1 / (1 + 0.00335/360)) ** (3*360))
+d4 = ((1 / (1 + 0.00350/360)) ** (4*360))
+
+d5 = ((1 / (1 + 0.00360/360)) ** (5*360))
+d7 = ((1 / (1 + 0.00400/360)) ** (7*360))
+
+print("d1: ", d1)
+print("d2: ", d2)
+print("d3: ", d3)
+print("d4: ", d4)
+print("d5: ", d5)
+
+# print("check d7 111: ", d7)
 d6 = (d5 + d7) / 2
 
-d10 = 1 / (1 + 0.0045 * 10)
+print("sum0: ", sum([ i for i in range(2) ]) / 2 )
+
+# # # Interpolate the discount factor for the 6-year period
+# # discount_factor_6y_interpolated = (discount_factor_5y + discount_factor_7y) / 2
+
+# # # Calculate the discount factor for the period between the 6th and the 7th year
+# # # This is done by finding the ratio of the 7-year discount factor to the interpolated 6-year discount factor
+# # discount_factor_6y7y_calculated = discount_factor_7y / discount_factor_6y_interpolated
+
+# # # Recompute the 7-year discount factor from the interpolated 6-year discount factor and the 6-to-7 year discount factor
+# # # This should match the original 7-year discount factor since we're recalculating based on the interpolated value
+# # recomputed_discount_factor_7y = discount_factor_6y_interpolated * discount_factor_6y7y_calculated
+
+# # discount_factor_6y_interpolated, discount_factor_6y7y_calculated, recomputed_discount_factor_7y
+
+# d6_7 = d7 / d6
+# d7 = d6 * d6_7
+# print("check d7 222: ", d7)
+
+# # d10 = 1 / (1 + 0.0045 * 10)
+d10 = ((1 / (1 + 0.00450/360)) ** (10*360))
 
 d8 = d7 + 1/3 * (d10-d7)
 d9 = d7 + 2/3 * (d10-d7)
 
-d15 = 1 / (1 + 0.005 * 15)
+print("sum1: ", sum([ i for i in range(3) ]) / 3 )
+
+# d15 = 1 / (1 + 0.005 * 15)
+d15 = ((1 / (1 + 0.00500/360)) ** (15*360))
 
 d11 = d10 + 1/5 * (d15-d10)
 d12 = d10 + 2/5 * (d15-d10)
 d13 = d10 + 3/5 * (d15-d10)
 d14 = d10 + 4/5 * (d15-d10)
+print("sum2: ", sum([ i for i in range(5) ]) / 5 )
 
-d20 = 1 / (1 + 0.00525 * 20)
+# d20 = 1 / (1 + 0.00525 * 20)
+d20 = ((1 / (1 + 0.00525/360)) ** (20*360))
 
 d16 = d15 + 1/5 * (d20-d15)
 d17 = d15 + 2/5 * (d20-d15)
 d18 = d15 + 3/5 * (d20-d15)
 d19 = d15 + 4/5 * (d20-d15)
 
-d30 = 1 / (1 + 0.0055 * 30)
+print("sum3: ", sum([ i for i in range(5) ]) / 5 )
+
+# d30 = 1 / (1 + 0.0055 * 30)
+d30 = ((1 / (1 + 0.00550/360)) ** (30*360))
 
 d21 = d20 + 1/10 * (d30-d20)
 d22 = d20 + 2/10 * (d30-d20)
@@ -40,18 +85,60 @@ d27 = d20 + 7/10 * (d30-d20)
 d28 = d20 + 8/10 * (d30-d20)
 d29 = d20 + 9/10 * (d30-d20)
 
+print("sum4: ", sum([ i for i in range(10) ]) / 10 )
+
+# discount_factors = [
+#     d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17,d18,d19,d20,d21,d22,d23,d24,d25,d26,d27,d28,d29,d30
+# ]
+
 discount_factors = [
-    d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17,d18,d19,d20,d21,d22,d23,d24,d25,d26,d27,d28,d29,d30
+    1/1.003,
+]
+
+rate = [
+    0.00300,
+    0.00325,
+    0.00335,
+    0.00350,
+    0.00360,
 ]
 
 l1 = d1 * 0.003
 pv_prev = l1
-for i in range(1, 30):
+for i in range(1, 5):
+	# print("discount_factors: ", discount_factors)
+	# print("rate["+str(i)+"]: ", rate[i])
+	# discount_factor_n_1 = ( pv_prev - rate[i] * sum(discount_factors) + discount_factors[-1] ) / ( ( rate[i] + 1 ) * discount_factors[-1] )
+	# discount_factor = discount_factors[-1] * discount_factor_n_1
+	# print("D("+str(i)+","+str(i+1)+"): ", discount_factor_n_1)
+	# print("D(0,"+str(i+1)+"): ", discount_factor)
+
+	discount_factor = ( 1 - rate[i] * sum(discount_factors) ) / ( rate[i] + 1 )
+
+	discount_factors.append(discount_factor)
 	# print(i, discount_factors[i])
-	pv = sum(discount_factors[0:i+1]) * ( ((1/discount_factors[i])-1) / (i+1) )
-	tmp = (1 / discount_factors[i]) * (pv - pv_prev)
+	# implied_rate = ( 1 / math.pow(discount_factors[i], 1 / ((i+1)*360)) - 1 ) * 360
+	# implied_rate = ( ( 1 / ( discount_factors[i] ** ((i+1)/360) ) ) - 1 ) * 360
+	
+	#implied_rate = ( ( 1 / ( discount_factors[i] ** (1/((i+1)*360)) ) ) - 1 ) * 360
+	# implied_rate = 1 / discount_factor
+
+	# print("i : ", i , "implied_rate: ", implied_rate)
+	# pv = sum(discount_factors[0:i+1]) * ( ((1/discount_factors[i])-1) / (i+1) )
+	
+	#pv = sum(discount_factors[0:i+1]) * rate[i]
+
+	pv = 1 - discount_factor
+
+	# print("check discount_factors: ", discount_factors, " and rate: ", rate[i])
+	print("so pv should be : ", pv)
+	# tmp = (1 / discount_factors[i]) * (pv - pv_prev)
+	tmp = ( 1 / discount_factor ) * ( pv - pv_prev )
 	f_val = 360 * (math.pow((tmp+1), 1/360) - 1)
-	print("dis_fac:", discount_factors[i], "\tf"+str(i+1), f_val, "\tpv"+str(i+1), pv)
+	# print("dis_fac:", discount_factors[i], "\tf"+str(i+1), f_val, "\tpv"+str(i+1), pv)
+	print("dis_fac:", discount_factor, "\tf"+str(i+1), f_val, "\tpv"+str(i+1), pv)
 	pv_prev = pv
+	
+
 
 
