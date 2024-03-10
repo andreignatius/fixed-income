@@ -168,28 +168,7 @@ f_2 = \left[\left(\frac{\text{Do}(0, 1y)}{\text{Do}(0, 2y)}\right)^{\frac{1}{360
 
 \begin{gather*}
 \text{Do}(0, 7y) = \underline{
-97.24058\%}
-\end{gather*}
-
-\noindent For \(f_7\):
-
-\begin{gather*}
-\text{Do}(0, 6y) - \text{Do}(0, 7y)
-= \text{Do}(0, 7y) \times \left[\left(1 + \frac{f_7}{360}\right)^{360} - 1\right]
-\end{gather*}
-
-\begin{gather*}
-\frac{\text{Do}(0, 5y) + \text{Do}(0, 7y)}{2} - \text{Do}(0, 7y)
-= \text{Do}(0, 7y) \times \left[\left(1 + \frac{f_7}{360}\right)^{360} - 1\right]
-\end{gather*}
-
-\begin{gather*}
-\frac{\text{Do}(0, 5y) + \text{Do}(0, 7y)}{2 \times  \text{Do}(0, 7y)}
-= \left(1 + \frac{f_7}{360}\right)^{360} 
-\end{gather*}
-
-\begin{gather*}
-f_7 = \underline{?????\%}\\
+97.24058\%},f_7 = \underline{0.50154\%}\\
 \end{gather*}
 
 \noindent For subsequent cases, we will need to express \text{Do}(0, y) in a general term again due to the need for interpolation.\\
@@ -198,39 +177,34 @@ f_7 = \underline{?????\%}\\
 
 \begin{gather*}
 \text{Do}(0, Y) = 
-\frac{PV_{X}^{} + \text{Do}(0,X)}{R_7 + 1}
+\frac{PV_{X}^{} + \text{Do}(0,X)}{R_Y + 1}
 \\
-- \frac{\left[\sum_{i=1}^{X} D_0(0, X) + \text{Do}(0,X) \times (Y-X-1) + \frac{\text{Do}(0, Y)-\text{Do}(0, X)}{Y-X} \times \sum_{i=1}^{Y-X-1}x \right] \times R_7}{R_7 + 1}
+- \frac{\left[\sum_{i=1}^{X} D_0(0, X) + \text{Do}(0,X) \times (Y-X-1) + \frac{\text{Do}(0, Y)-\text{Do}(0, X)}{Y-X-1} \times \sum_{i=1}^{Y-X-1}x \right] \times R_Y}{R_Y + 1}
 \end{gather*}
+
+\noindent Now make \text{Do}(0,X) the subject of the formula, while substituting $PV_{X}^{} + \text{Do}(0,X) = 1$:
 
 \begin{gather*}
 \text{Do}(0, Y) = 
-\frac{PV_{X}^{} + \text{Do}(0,X)}{R_7 + 1}
-\\
-- \frac{\left[\sum_{i=1}^{X} D_0(0, X) + \text{Do}(0,X) \times (Y-X-1) - \frac{\text{Do}(0, X)}{Y-X} \times \sum_{i=1}^{Y-X-1}x \right] \times R_7}{R_7 + 1}
-\\
--\frac{\text{Do}(0, Y) \times \sum_{i=1}^{X} D_0(0, X) \times R_7}{R_7 + 1}
+\frac{1-\left[ \sum_{i=1}^{X}\text{Do}(0,x) + \text{Do}(0,X)(Y-X-1) - \frac{\text{Do}(0,X)}{Y-X}(\sum_{i=1}^{Y-X-1}x)\right] \times R_Y}{R_y + 1} / \\ \left(1+
+\frac{\sum_{i=1}^{Y-X-1}x \times R_Y}{(R_Y+1)(Y-X)} \right)
 \end{gather*}
+
+\noindent Using this methodology we can calculate the rest of the discount factors and overnight rates:
 
 \begin{gather*}
-\text{Do}(0, Y) + \frac{\text{Do}(0, Y) \times \sum_{i=1}^{X} D_0(0, X) \times R_7}{R_7 + 1} = 
-\frac{PV_{X}^{} + \text{Do}(0,X)}{R_7 + 1}
-\\
-- \frac{\left[\sum_{i=1}^{X} D_0(0, X) + \text{Do}(0,X) \times (Y-X-1) - \frac{\text{Do}(0, X)}{Y-X} \times \sum_{i=1}^{Y-X-1}x \right] \times R_7}{R_7 + 1}
+\text{Do}(0, 10y) = \underline{
+95.59769\%
+},f_7 = \underline{0.57122\%}\\
+\text{Do}(0, 15y) = \underline{
+92.76115\%
+},f_7 = \underline{0.60972\%}\\
+\text{Do}(0, 20y) = \underline{
+90.00759\%
+},f_7 = \underline{0.60999\%}\\
+\text{Do}(0, 30y) = \underline{
+84.74067\%
+},f_7 = \underline{0.61962\%}\\
 \end{gather*}
-
-\begin{gather*}
-\text{Do}(0, Y) \times \left[1+ \frac{ \sum_{i=1}^{X} D_0(0, X) \times R_7}{R_7 + 1} \right] = 
-\frac{PV_{X}^{} + \text{Do}(0,X)}{R_7 + 1}
-\\
-- \frac{\left[\sum_{i=1}^{X} D_0(0, X) + \text{Do}(0,X) \times (Y-X-1) - \frac{\text{Do}(0, X)}{Y-X} \times \sum_{i=1}^{Y-X-1}x \right] \times R_7}{R_7 + 1}
-\end{gather*}
-
-\begin{equation}
-\begin{split}
-\text{Do}(0, Y) = &\frac{\frac{PV_{X}^{} + \text{Do}(0,X)}{R_7 + 1} - \frac{\left[\sum_{i=1}^{X} D_0(0, X) + \text{Do}(0,X) \times (Y-X-1) - \frac{\text{Do}(0, X)}{Y-X} \times \sum_{i=1}^{Y-X-1}x \right] \times R_7}{R_7 + 1}}{\left[1+ \frac{ \sum_{i=1}^{X} D_0(0, X) \times R_7}{R_7 + 1} \right]}
-\end{split}
-\end{equation}
-
 
 \end{document}
