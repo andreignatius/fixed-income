@@ -1,5 +1,6 @@
 import math
 import json
+import re
 
 d1 = 1 / (1 + 0.003)
 # r1 = ( ( 1 / ( d1 ** (1/360) ) ) - 1 ) * 360
@@ -95,6 +96,8 @@ print("sum4: ", sum([ i for i in range(10) ]) / 10 )
 discount_factors = [
     1/1.003,
 ]
+
+discount_factors_dict = {}
 
 # rate = [
 #     0.00300,
@@ -211,6 +214,94 @@ for tenor in rates_table:
 	pv_prev = pv
 
 	results[tenor] = {'dis_fac' : discount_factor, 'pv' : pv}
+	discount_factors_dict[tenor] = discount_factor
 	
 print(json.dumps(results, indent=4))
+
+print(json.dumps(discount_factors_dict, indent=4))
+
+discount_factors_dict['6Y'] = discount_factors_dict['5Y'] + 1/2 * ( discount_factors_dict['7Y'] - discount_factors_dict['5Y'] )
+
+discount_factors_dict['8Y'] = discount_factors_dict['7Y'] + 1/3 * ( discount_factors_dict['10Y'] - discount_factors_dict['7Y'] )
+discount_factors_dict['9Y'] = discount_factors_dict['7Y'] + 2/3 * ( discount_factors_dict['10Y'] - discount_factors_dict['7Y'] )
+
+discount_factors_dict['11Y'] = discount_factors_dict['10Y'] + 1/5 * ( discount_factors_dict['15Y'] - discount_factors_dict['10Y'] )
+discount_factors_dict['12Y'] = discount_factors_dict['10Y'] + 2/5 * ( discount_factors_dict['15Y'] - discount_factors_dict['10Y'] )
+discount_factors_dict['13Y'] = discount_factors_dict['10Y'] + 3/5 * ( discount_factors_dict['15Y'] - discount_factors_dict['10Y'] )
+discount_factors_dict['14Y'] = discount_factors_dict['10Y'] + 4/5 * ( discount_factors_dict['15Y'] - discount_factors_dict['10Y'] )
+
+discount_factors_dict['16Y'] = discount_factors_dict['15Y'] + 1/5 * ( discount_factors_dict['20Y'] - discount_factors_dict['15Y'] )
+discount_factors_dict['17Y'] = discount_factors_dict['15Y'] + 2/5 * ( discount_factors_dict['20Y'] - discount_factors_dict['15Y'] )
+discount_factors_dict['18Y'] = discount_factors_dict['15Y'] + 3/5 * ( discount_factors_dict['20Y'] - discount_factors_dict['15Y'] )
+discount_factors_dict['19Y'] = discount_factors_dict['15Y'] + 4/5 * ( discount_factors_dict['20Y'] - discount_factors_dict['15Y'] )
+
+discount_factors_dict['21Y'] = discount_factors_dict['20Y'] + 1/10 * ( discount_factors_dict['30Y'] - discount_factors_dict['20Y'] )
+discount_factors_dict['22Y'] = discount_factors_dict['20Y'] + 2/10 * ( discount_factors_dict['30Y'] - discount_factors_dict['20Y'] )
+discount_factors_dict['23Y'] = discount_factors_dict['20Y'] + 3/10 * ( discount_factors_dict['30Y'] - discount_factors_dict['20Y'] )
+discount_factors_dict['24Y'] = discount_factors_dict['20Y'] + 4/10 * ( discount_factors_dict['30Y'] - discount_factors_dict['20Y'] )
+discount_factors_dict['25Y'] = discount_factors_dict['20Y'] + 5/10 * ( discount_factors_dict['30Y'] - discount_factors_dict['20Y'] )
+discount_factors_dict['26Y'] = discount_factors_dict['20Y'] + 6/10 * ( discount_factors_dict['30Y'] - discount_factors_dict['20Y'] )
+discount_factors_dict['27Y'] = discount_factors_dict['20Y'] + 7/10 * ( discount_factors_dict['30Y'] - discount_factors_dict['20Y'] )
+discount_factors_dict['28Y'] = discount_factors_dict['20Y'] + 8/10 * ( discount_factors_dict['30Y'] - discount_factors_dict['20Y'] )
+discount_factors_dict['29Y'] = discount_factors_dict['20Y'] + 9/10 * ( discount_factors_dict['30Y'] - discount_factors_dict['20Y'] )
+
+# sorted(discount_factors_dict.keys(), key=lambda s: int(re.search(r'\d+', s).group()))
+# discount_factors_dict = dict(sorted(discount_factors_dict.items(), key=lambda s: int(re.search(r'\d+', s).group())))
+
+# Create new dictionary
+discount_factors_dict_sorted = {}
+
+# sort the keys and store them in a new variable
+sorted_tenors = sorted(discount_factors_dict.keys(), key=lambda s: int(re.search(r'\d+', s).group()))
+
+# for all the values in sorted_value
+for tenor in sorted_tenors:
+	print("tenor: ", tenor)
+	# match the key element with un-sorted dictionary
+	for key, value in discount_factors_dict.items():
+		if key == tenor:
+			# when matched place the key and value in the new dict
+			discount_factors_dict_sorted[key] = value
+
+print(json.dumps(discount_factors_dict_sorted, indent=4))
+
+discount_factors_list = []
+for key, value in discount_factors_dict_sorted.items():
+	discount_factors_list.append( value )
+
+for i in range(1, len(discount_factors_list)):
+	discount_factor_numerator   = discount_factors_list[i-1]
+	discount_factor_denominator = discount_factors_list[i]
+	factor = discount_factor_numerator / discount_factor_denominator
+	f_val = 360 * (math.pow(factor, 1/360) - 1)
+	pv = 1 - discount_factor_denominator
+	j = i+2
+	print("f"+str(f'{j:02d}')+": ", round(f_val,10), "\td"+str(f'{j:02d}')+": ", round(discount_factors_list[i],10), "\tpv"+str(f'{j:02d}')+": ", round(pv,10))
+	# # print(i, discount_factors[i])
+	# # implied_rate = ( 1 / math.pow(discount_factors[i], 1 / ((i+1)*360)) - 1 ) * 360
+	# # implied_rate = ( ( 1 / ( discount_factors[i] ** ((i+1)/360) ) ) - 1 ) * 360
+	
+	# #implied_rate = ( ( 1 / ( discount_factors[i] ** (1/((i+1)*360)) ) ) - 1 ) * 360
+	# # implied_rate = 1 / discount_factor
+
+	# # print("i : ", i , "implied_rate: ", implied_rate)
+	# # pv = sum(discount_factors[0:i+1]) * ( ((1/discount_factors[i])-1) / (i+1) )
+	
+	# #pv = sum(discount_factors[0:i+1]) * rate[i]
+
+	# pv = 1 - discount_factor
+
+	# # print("check discount_factors: ", discount_factors, " and rate: ", rate[i])
+	# print("so pv should be : ", pv)
+	# # tmp = (1 / discount_factors[i]) * (pv - pv_prev)
+	# tmp = ( 1 / discount_factor ) * ( pv - pv_prev )
+	# f_val = 360 * (math.pow((tmp+1), 1/360) - 1)
+	# # print("dis_fac:", discount_factors[i], "\tf"+str(i+1), f_val, "\tpv"+str(i+1), pv)
+	# print("dis_fac:", discount_factor, "\tf"+str(tenor.replace('Y','')), f_val, "\tpv"+str(tenor.replace('Y','')), pv)
+	# pv_prev = pv
+
+	# results[tenor] = {'dis_fac' : discount_factor, 'pv' : pv}
+	# discount_factors_dict[tenor] = discount_factor
+
+
 
